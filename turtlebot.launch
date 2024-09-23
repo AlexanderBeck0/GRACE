@@ -1,0 +1,27 @@
+
+<launch>
+  <include file="launch/yolo_v3.launch"> </include>
+
+  <!-- <node pkg="detection_rb" name="detection_2_rb" type="detection2RB.py" output="screen">
+  </node> -->
+
+  <node pkg="semantic_slam" name="semantic_SLAM" type="SemanticSLAM_turtle.py" output="screen">
+  </node>
+
+  <include file="launch/room_segmentation_action_server.launch"> </include>
+
+  <node pkg="BBN" name="BBN" type="BBN_turtle.py" output="screen">
+  </node>
+
+  <!-- <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/camera/depth_registered/image_raw/compressed raw out:=/camera/depth_registered/image_raw/uncompressed" /> -->
+
+  <!-- <node pkg="image_recorder" name="image_recorder" type="image_recorder.py" output="screen">
+  </node> -->
+
+  <!-- <node name="extract" pkg="image_view" type="video_recorder" respawn="false" required="true" output="screen" cwd="ROS_HOME">
+      <remap from="image" to="/camera/rgb/image_rect_color"/>
+      <param name="filename" value="search_for_person2.avi"/>
+      <param name="fps" value="10"/>
+  </node> -->
+
+</launch>

@@ -1,0 +1,6 @@
+
+
+Kitchen   microwave, oven,  toaster, sink, refrigerator, bottle wine glass, cup, fork, knife, spoon, bowl,
+Bathroom toilet, hair drier, toothbrush, sink
+Living room: chair sofa diningtable tvmonitor remote,
+Office: chair, tvmonitor, laptop, mouse,  keyboard, book

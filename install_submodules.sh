@@ -33,3 +33,4 @@ fi
 # Go back to src
 cd ../../../
 # git clone --recursive https://github.com/ipa320/ipa_coverage_planning.git -o src
+# git clone --recursive https://github.com/ipa320/ipa_coverage_planning.git -o src

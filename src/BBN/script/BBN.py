@@ -1,4 +1,4 @@
-#!/home/zhentian/anaconda3/envs/habitat/bin/python
+#!/usr/bin/env python
 from pybbn.graph.dag import Bbn
 from pybbn.graph.edge import Edge, EdgeType
 from pybbn.graph.jointree import EvidenceBuilder, EvidenceType

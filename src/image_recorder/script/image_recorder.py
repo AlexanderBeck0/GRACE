@@ -13,7 +13,7 @@ class ImageRecorder:
 
     def img_callback(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
-        cv2.imwrite("/home/zhentian/TurtleBot/Images/"+ str(msg.header.seq)+".png", cv_image)
+        cv2.imwrite("../../../out/Images/"+ str(msg.header.seq)+".png", cv_image)
 
         return
 

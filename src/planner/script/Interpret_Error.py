@@ -1,6 +1,6 @@
 import pickle
 import matplotlib.pyplot as plt
-with open('/home/zhentian/TurtleBot/error_log.pkl') as f:  
+with open('../../../out/error_log.pkl') as f:  
     vel_err, ang_err = pickle.load(f)
 
 plt.figure(1)

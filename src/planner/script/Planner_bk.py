@@ -345,7 +345,7 @@ class Planner:
         self.max_linear_speed = 0.2
         self.max_turn_speed = 0.2
         mat = io.loadmat(
-            '/home/zhentian/Github/habitat-lab/src/planner/script/pos.mat')
+            'pos.mat')
         self.circle_pos = mat['pos']
         self.circle_op = mat['op']
         self.max_error = 0

@@ -72,7 +72,7 @@ class Detection2RB:
 
                 range_msg = RangeBearings()
                 range_bearings = []
-                file = open("/home/zhentian/TurtleBot/Detections/Detections.txt", "a")
+                file = open("../../../out/Detections/Detections.txt", "a")
                 line = str(img_id) + " " 
                 for bounding_box in result.bounding_boxes.bounding_boxes:
                     depth_mask = depth[bounding_box.ymin:bounding_box.ymax, bounding_box.xmin:bounding_box.xmax]

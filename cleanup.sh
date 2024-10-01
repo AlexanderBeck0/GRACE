@@ -1,6 +1,6 @@
-rm /home/zhentian/TurtleBot/Detections/*.txt
-rm /home/zhentian/TurtleBot/Images/*.png
-rm /home/zhentian/TurtleBot/MissionStatus/*.txt
-rm /home/zhentian/TurtleBot/RoomLabels/*.txt
-rm /home/zhentian/TurtleBot/Reward/*.jpg 
-rm /home/zhentian/TurtleBot/SLAM/*.txt
+rm /out/Detections/*.txt
+rm /out/Images/*.png
+rm /out/MissionStatus/*.txt
+rm /out/RoomLabels/*.txt
+rm /out/Reward/*.jpg 
+rm /out/SLAM/*.txt

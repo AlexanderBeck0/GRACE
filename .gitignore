@@ -1,1 +1,4 @@
 .vscode
+out
+new_log5.pkl
+new_log5.npy

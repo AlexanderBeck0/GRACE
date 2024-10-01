@@ -233,7 +233,7 @@ class SemanticSLAM():
         D_opt = 0
         E_opt = 0
 
-        file1 = open("/home/zhentian/Github/habitat-lab/new_offline_map5/" + str(self.time_id) +  ".txt", "w")
+        file1 = open("../../../new_offline_map5/" + str(self.time_id) +  ".txt", "w")
         #file1 = open("/home/zhentian/Github/habitat-lab/" + "current_map.txt", "w")
         file1.write(str(self.t) + '\n')
         for obj_id in self.objects:
@@ -275,10 +275,10 @@ class SemanticSLAM():
         self.time_id += 1
 
     def save_data(self):
-        with open("/home/zhentian/Github/habitat-lab/new_log5.pkl", "wb") as fp:  # Pickling
+        with open("../../../new_log5.pkl", "wb") as fp:  # Pickling
             pickle.dump([self.t_series, self.entropy_series], fp)
 
-        with open('/home/zhentian/Github/habitat-lab/new_log5.npy', 'wb') as f:
+        with open('../../../new_log5.npy', 'wb') as f:
             np.save(f, self.t_series)
             np.save(f, self.entropy_series)
             np.save(f, self.A_opt)

@@ -15,6 +15,7 @@ cd $current_dir
 [[ -d out ]] || mkdir out && cd out
 
 [[ -d Detections ]] || mkdir Detections
+[[ -d RoomLabels ]] || mkdir RoomLabels
 [[ -d Images ]] || mkdir Images
 [[ -d MissionStatus ]] || mkdir MissionStatus
 [[ -d Reward ]] || mkdir Reward
@@ -23,4 +24,4 @@ cd $current_dir
 # Go back to previous directory
 cd ../
 
-sudo apt install python-pip && pip install pybbn
+sudo apt install python3-pip && pip3 install pybbn && pip3 install rospkg 

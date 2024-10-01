@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from pybbn.graph.dag import Bbn
 from pybbn.graph.edge import Edge, EdgeType
 from pybbn.graph.jointree import EvidenceBuilder, EvidenceType

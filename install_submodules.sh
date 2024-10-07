@@ -32,4 +32,14 @@ fi
 
 # Go back to src
 cd ../../../
+
+# Remove unused folders in ipa_coverage_planning
+cd ipa_coverage_planning/
+[[ -d ipa_room_exploration ]] && rm -r ipa_room_exploration
+[[ -d ipa_coverage_planning ]] && rm -r ipa_coverage_planning
+[[ -d ipa_building_navigation ]] && rm -r ipa_building_navigation
+
+# Go back to src
+cd ../
+
 # git clone --recursive https://github.com/ipa320/ipa_coverage_planning.git -o src

@@ -12,6 +12,10 @@ sudo apt install ros-melodic-libdlib
 cd $current_dir
 
 # Make folders if they do not already exist
+
+# Format for creating a folder if it doesn't exist is:
+# [[ -d NewFolder ]] || mkdir NewFolder
+
 [[ -d out ]] || mkdir out && cd out
 
 [[ -d Detections ]] || mkdir Detections
@@ -24,4 +28,8 @@ cd $current_dir
 # Go back to previous directory
 cd ../
 
-sudo apt install python3-pip && pip3 install pybbn && pip3 install rospkg 
+sudo apt install python3-pip && pip3 install --upgrade pip && pip3 install pybbn && pip3 install rospkg && pip3 install matplotlib && pip3 install scikit-image
+# python3 -m pip install opencv-python
+# Use this version since all others that I have tried in the past 2 hours are just not working
+# Stuck at Building wheels for collected packages: opencv-python
+pip3 install opencv-python==4.5.3.56

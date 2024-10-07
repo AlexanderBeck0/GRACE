@@ -1,6 +1,7 @@
 [submodule "src/ipa_coverage_planning"]
 	path = src/ipa_coverage_planning
 	url = https://github.com/ipa320/ipa_coverage_planning.git
+	ignore = dirty
 [submodule "src/darknet_ros"]
 	path = src/darknet_ros
 	url = https://github.com/leggedrobotics/darknet_ros.git

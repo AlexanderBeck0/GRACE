@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+import os
 from time import time
 import rospy
 from cv_bridge import CvBridge
@@ -72,7 +73,7 @@ class Detection2RB:
 
                 range_msg = RangeBearings()
                 range_bearings = []
-                file = open("../../../out/Detections/Detections.txt", "a")
+                file = open(os.path.join(os.path.dirname(__file__), "../../../out/Detections/Detections.txt"), "a")
                 line = str(img_id) + " " 
                 for bounding_box in result.bounding_boxes.bounding_boxes:
                     depth_mask = depth[bounding_box.ymin:bounding_box.ymax, bounding_box.xmin:bounding_box.xmax]

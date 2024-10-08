@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+import os
 from sensor_msgs.msg import Image
 import rospy
 from cv_bridge import CvBridge
@@ -13,7 +14,7 @@ class ImageRecorder:
 
     def img_callback(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
-        cv2.imwrite("../../../out/Images/"+ str(msg.header.seq)+".png", cv_image)
+        cv2.imwrite(os.path.join(os.path.dirname(__file__), "../../../out/Images/") + str(msg.header.seq)+".png", cv_image)
 
         return
 

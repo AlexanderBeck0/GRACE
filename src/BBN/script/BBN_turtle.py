@@ -11,6 +11,7 @@ from time import time
 from sensor_msgs.msg import CompressedImage
 import rospy
 import numpy as np
+import os
 # create the nodes
 
 
@@ -41,7 +42,8 @@ class BBN:
         self.image_sub = rospy.Subscriber('/camera/rgb/image_rect_color/compressed', CompressedImage, self.img_callback)
 
     def img_callback(self, msg):
-        file = open("../../../out/RoomLabels/RoomLabel.txt", "a")
+        # Get or create RoomLabel.txt
+        file = open(os.path.join(os.path.dirname(__file__), "../../../out/RoomLabels/RoomLabel.txt"), "a")
         line = str(msg.header.seq) + " "
         for p in self.semantic_label:
             line += str(p)

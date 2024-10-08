@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+import os
 import numpy as np
 from numpy.linalg import inv, norm, eig, det
 from scipy.interpolate import interp1d
@@ -331,7 +332,7 @@ class Planner:
         print('total time is ', self.total_time)
         print('total path length ',self.path_length)
         print('num planning cycle is ', self.num_cycle)
-        with open("../../../out/error_log.pkl", "wb") as fp:  # Pickling
+        with open(os.path.join(os.path.dirname(__file__), "../../../out/error_log.pkl"), "wb") as fp:  # Pickling
             pickle.dump([self.vel_error_log, self.ang_error_log], fp)
 
     def replanning_callback(self, msg):
@@ -339,7 +340,7 @@ class Planner:
             self.replan = True
 
     def img_callback(self, msg):
-        file = open("../../../out/MissionStatus/MissionStatus.txt", "a")
+        file = open(os.path.join(os.path.dirname(__file__), "../../../out/MissionStatus/MissionStatus.txt"), "a")
         line = str(msg.header.seq) + " "
 
         text1 = " Mission completed: " + str(self.mission_status)
@@ -531,7 +532,7 @@ class Planner:
                         img_id = self.img_id
 
                         if self.grid_map_grey is not None:
-                            cv2.imwrite('../../../out/Reward/map_' +  str(img_id)+'.jpg', self.grid_map_grey)
+                            cv2.imwrite(os.path.join(os.path.dirname(__file__), '../../../out/Reward/map_') +  str(img_id)+'.jpg', self.grid_map_grey)
                         
                         self.downsample_rate = math.ceil(0.2 / self.resolution)
 
@@ -557,7 +558,7 @@ class Planner:
                             for obj_id in self.sightings_map:
                                 if self.sightings_map[obj_id] is not None:
                                     temp = self.sightings_map[obj_id] * 255
-                                    cv2.imwrite('../../../out/Reward/goal_' +  str(img_id)+'.jpg', temp.astype(np.uint8))
+                                    cv2.imwrite(os.path.join(os.path.dirname(__file__), '../../../out/Reward/goal_') +  str(img_id)+'.jpg', temp.astype(np.uint8))
 
                                 for i in range(height_shrinked):
                                     for j in range(width_shrinked):
@@ -574,7 +575,7 @@ class Planner:
 
                             if self.frontier_map is not None:
                                 temp = self.frontier_map * 255
-                                cv2.imwrite('../../../out/Reward/goal_' +  str(img_id)+'.jpg', temp.astype(np.uint8))
+                                cv2.imwrite(os.path.join(os.path.dirname(__file__), '../../../out/Reward/goal_') +  str(img_id)+'.jpg', temp.astype(np.uint8))
 
                             for i in range(height_shrinked):
                                 for j in range(width_shrinked):

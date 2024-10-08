@@ -1,6 +1,7 @@
+import os
 import pickle
 import matplotlib.pyplot as plt
-with open('../../../out/error_log.pkl') as f:  
+with open(os.path.join(os.path.dirname(__file__), '../../../out/error_log.pkl')) as f:  
     vel_err, ang_err = pickle.load(f)
 
 plt.figure(1)

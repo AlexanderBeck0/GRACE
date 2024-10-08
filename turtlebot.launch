@@ -2,6 +2,7 @@
 <launch>
   <include file="launch/yolo_v3.launch"> </include>
 
+ <!-- Uncomment to use YOLO -->
   <!-- <node pkg="detection_rb" name="detection_2_rb" type="detection2RB.py" output="screen">
   </node> -->
 
@@ -18,6 +19,7 @@
   <!-- <node pkg="image_recorder" name="image_recorder" type="image_recorder.py" output="screen">
   </node> -->
 
+  <!-- Uncomment to save a video in your ros home directory -->
   <!-- <node name="extract" pkg="image_view" type="video_recorder" respawn="false" required="true" output="screen" cwd="ROS_HOME">
       <remap from="image" to="/camera/rgb/image_rect_color"/>
       <param name="filename" value="search_for_person2.avi"/>

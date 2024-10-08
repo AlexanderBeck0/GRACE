@@ -26,4 +26,6 @@
       <param name="fps" value="10"/>
   </node> -->
 
+  <!-- <node pkg="planner" name="planner" type="Planner_turtle.py" output="screen"></node> -->
+
 </launch>

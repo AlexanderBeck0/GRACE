@@ -2,6 +2,7 @@
 <launch>
   <include file="launch/yolo_v3.launch"> </include>
 
+ <!-- Uncomment to use YOLO -->
   <!-- <node pkg="detection_rb" name="detection_2_rb" type="detection2RB.py" output="screen">
   </node> -->
 

@@ -60,7 +60,12 @@ class Detection2RB:
                 # Creates a goal to send to the action server.
                 goal = darknet_ros_msgs.msg.CheckForObjectsGoal()
                 goal.id = 0
-                goal.image = self.img
+                # Changed to convert to compressed image since Image does not have format attribute
+                # Note that it is likely that the republish in the turtlebot.launch was used for this purpose,
+                # but simply uncommenting it does not fix it
+
+                # goal.image = self.img
+                goal.image = self.convert_Image_to_CompressedImage(self.img)
                 img_id = self.img.header.seq
                 self.client.send_goal(goal)
                 depth = self.depth.copy()
@@ -193,6 +198,28 @@ class Detection2RB:
             raise Exception("Could not decode compressed depth image."
                             "You may need to change 'depth_header_size'!")
         return depth_img_raw
+    
+    def convert_Image_to_CompressedImage(self, image):
+        """
+        Converts `image` into a `CompressedImage`
+
+        Parameters:
+            image (Image): The image to convert into a `CompressedImage`.
+
+        Returns:
+            CompressedImage (CompressedImage): The compressed image
+        """
+
+        np_image = np.frombuffer(image.data, np.uint8).reshape(image.height, image.width, -1)
+
+        success, encoded_image = cv2.imencode('.jpg', np_image)
+
+        compressed_image = CompressedImage()
+        compressed_image.header = image.header
+        compressed_image.format = "jpeg"  # Update based on your compression method
+        compressed_image.data = encoded_image.tobytes()
+
+        return compressed_image
        
 if __name__ == '__main__':
     rospy.init_node("detection_2_rb")

@@ -74,7 +74,7 @@ if grep -Fq "camera/rgb/image_raw" darknet_ros/darknet_ros/launch/yolo_v3.launch
 then
     echo "darknet_ros/.../yolo_v3.launch is using camera/rgb/image_raw instead of /camera/rgb/void. Changing..."
     # Replace camera/rgb/image_raw with camera/rgb/void
-    sed -i 's|camera/rgb/image_raw|camera/rgb/void|' darknet_ros/darknet_ros/launch/yolo_v3.launch
+    sed -i 's|camera/rgb/image_raw|/camera/rgb/void|' darknet_ros/darknet_ros/launch/yolo_v3.launch
 fi
 
 changed_c_files=false
@@ -128,6 +128,89 @@ then
     echo "Missing ClassDistribution in RosBox_ in YoloObjectDetector.hpp. Adding now..."
     # Add (two spaces) std::vector<float> ClassDistribution; after int num, Class;
     sed -i "/int num, Class;/a\  std::vector<float> ClassDistribution;" darknet_ros/darknet_ros/include/darknet_ros/YoloObjectDetector.hpp
+
+    # Ensure to remind user to recompile
+    changed_c_files=true
+fi
+
+if ! grep -Fq "double goalTime_;" darknet_ros/darknet_ros/include/darknet_ros/YoloObjectDetector.hpp
+then
+    echo "Missing goalTime_ in YoloObjectDetector.hpp. Adding now..."
+    # Add (two spaces) std::vector<float> ClassDistribution; after int num, Class;
+    sed -i "/double demoTime_;/a\  double goalTime_;" darknet_ros/darknet_ros/include/darknet_ros/YoloObjectDetector.hpp
+
+    # Ensure to remind user to recompile
+    changed_c_files=true
+fi
+
+# YoloObjectDetector.cpp
+if ! grep -Fq "goalTime_ = what_time_is_it_now();" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+then
+    echo "Missing goalTime_ = what_time_is_it_now() in YoloObjectDetector.cpp. Adding now..."
+    # Add (two spaces) goalTime_ = what_time_is_it_now(); after ROS_DEBUG...
+    sed -i "/ROS_DEBUG(\"\[YoloObjectDetector\] Start check for objects action.\");/a\  goalTime_ = what_time_is_it_now();" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+
+    # Ensure to remind user to recompile
+    changed_c_files=true
+fi
+
+# YoloObjectDetector.cpp
+if grep -Fq "sensor_msgs::Image imageAction = imageActionPtr->image;" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+then
+    echo "Wrong image from sensor_msgs in YoloObjectDetector.cpp. Adding now..."
+    sed -i "s/sensor_msgs::Image imageAction = imageActionPtr->image;/sensor_msgs::CompressedImage imageAction = imageActionPtr->image;/" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+
+    # Ensure to remind user to recompile
+    changed_c_files=true
+fi
+
+# YoloObjectDetector.cpp
+if grep -Fq "imageAction, sensor_msgs::image_encodings::BGR8" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+then
+    echo "Wrong image encoding in cam_image = cv_bridge... (line 208) in YoloObjectDetector.cpp. Adding now..."
+    sed -i "s/imageAction, sensor_msgs::image_encodings::BGR8/imageAction, sensor_msgs::image_encodings::RGB8/" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+
+    # Ensure to remind user to recompile
+    changed_c_files=true
+fi
+
+# YoloObjectDetector.cpp
+if grep -Fq "(dets[i].prob[j])" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+then
+    echo "Not using threshold (line 345) in YoloObjectDetector.cpp. Adding now..."
+    sed -i "s/(dets\[i\].prob\[j\])/(dets\[i\].prob\[j\] > demoThresh_)/" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+
+    # Ensure to remind user to recompile
+    changed_c_files=true
+fi
+
+# YoloObjectDetector.cpp
+if ! grep -Fq "roiBoxes_[count].ClassDistribution.resize(demoClasses_);" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+then
+    echo "Missing roiBoxes_[count]...(line 359) in YoloObjectDetector.cpp. Adding now..."
+    sed -i "/roiBoxes_\[count\].prob = dets\[i\].prob\[j\];/a\          roiBoxes_\[count\].ClassDistribution.resize(demoClasses_);" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+    sed -i "/roiBoxes_\[count\].ClassDistribution.resize(demoClasses_);/a\          std::copy(dets\[i\].prob, dets\[i\].prob + demoClasses_, roiBoxes_\[count\].ClassDistribution.begin());" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+
+    # Ensure to remind user to recompile
+    changed_c_files=true
+fi
+
+# YoloObjectDetector.cpp
+if ! grep -Fq "boundingBox.Class_distribution = rosBoxes_[i][j].ClassDistribution;" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+then
+    echo "Missing boundingBox.Class_distribution = ...(line 582) in YoloObjectDetector.cpp. Adding now..."
+    sed -i "/boundingBox.ymax = ymax;/a\          boundingBox.Class_distribution = rosBoxes_[i][j].ClassDistribution;" darknet_ros/darknet_ros/src/YoloObjectDetector.cpp
+
+    # Ensure to remind user to recompile
+    changed_c_files=true
+fi
+
+# Change yolo_layer.c
+if grep -Fq "dets[count].prob[j] = (prob > thresh) ? prob : 0;" darknet_ros/darknet/src/yolo_layer.c
+then
+    echo "yolo_layer.c still uses threshold instead of probability. Changing now..."
+    # Replace 'dets[count].prob[j] = (prob > thresh) ? prob : 0;' with 'dets[count].prob[j] = prob;'
+    sed -i 's/dets\[count\].prob\[j\] = (prob > thresh) ? prob : 0/dets\[count\].prob\[j\] = prob/g' darknet_ros/darknet/src/yolo_layer.c
 
     # Ensure to remind user to recompile
     changed_c_files=true

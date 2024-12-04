@@ -3,8 +3,8 @@
   <include file="launch/yolo_v3.launch"> </include>
 
  <!-- Uncomment to use YOLO -->
-  <!-- <node pkg="detection_rb" name="detection_2_rb" type="detection2RB.py" output="screen">
-  </node> -->
+  <node pkg="detection_rb" name="detection_2_rb" type="detection2RB.py" output="screen">
+  </node>
 
   <node pkg="semantic_slam" name="semantic_SLAM" type="SemanticSLAM_turtle.py" output="screen">
   </node>
@@ -26,6 +26,6 @@
       <param name="fps" value="10"/>
   </node> -->
 
-  <!-- <node pkg="planner" name="planner" type="Planner_turtle.py" output="screen"></node> -->
+<!-- <node pkg="planner" name="planner" type="Planner_turtle.py" output="screen"></node> -->
 
 </launch>

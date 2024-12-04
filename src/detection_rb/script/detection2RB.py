@@ -21,6 +21,7 @@ class Detection2RB:
         self.depth = None
 
         self.latch = False
+        """From what I can tell, this is used to ensure that while the code is running, no new information is being processed."""
         self.isUpdated = False
         
         self.image_sub = message_filters.Subscriber('/camera/rgb/image_rect_color/compressed', CompressedImage)
@@ -34,6 +35,7 @@ class Detection2RB:
         # listening for goals.
         self.client.wait_for_server()
 
+        # Camera intrinsics information
         info_msg = rospy.wait_for_message('/camera/rgb/camera_info', CameraInfo)
 
         self.fx = info_msg.K[0]
@@ -41,7 +43,10 @@ class Detection2RB:
         self.fy = info_msg.K[4]
         self.cy = info_msg.K[5]
         
+        # Syncronize the image_sub and depth_sub headers with a 0.02 second tolerence 
         self.ts = message_filters.ApproximateTimeSynchronizer([self.image_sub, self.depth_sub], 10, 0.02)
+
+        # Convert the compressed images in image_sub and depth_sub into Images
         self.ts.registerCallback(self.callback)
 
     def depth_callback(self, depth_msg):
@@ -54,8 +59,11 @@ class Detection2RB:
             sendGoal = False
             depth = None
             img_id = None
+            # Run only when there is a new update
             if self.isUpdated:
                 self.latch = True
+
+                # Indicate that the newest update is no longer newest
                 self.isUpdated = False
                 # Creates a goal to send to the action server.
                 goal = darknet_ros_msgs.msg.CheckForObjectsGoal()
@@ -80,9 +88,13 @@ class Detection2RB:
                 range_bearings = []
                 file = open(os.path.join(os.path.dirname(__file__), "../../../out/Detections/Detections.txt"), "a")
                 line = str(img_id) + " " 
+
+                # Loop through the detections of bounding boxes
                 for bounding_box in result.bounding_boxes.bounding_boxes:
                     depth_mask = depth[bounding_box.ymin:bounding_box.ymax, bounding_box.xmin:bounding_box.xmax]
                     obj_coords = np.nonzero(depth_mask)
+                    
+                    # Convert image coordinates to camera frame
                     z = depth_mask[obj_coords] / 1000.0
 
                     obj_coords = np.asarray(obj_coords).T
@@ -91,7 +103,7 @@ class Detection2RB:
                     uy = obj_coords[:, 0]
 
                     x = (ux - self.cx) * z / self.fx
-                    y = (uy - self.cy) * z / self.fx
+                    y = (uy - self.cy) * z / self.fx # BUG: Is this meant to divide by fx or fy?
 
                     x_mean = np.mean(x)
                     y_mean = np.mean(y)
@@ -99,7 +111,9 @@ class Detection2RB:
 
                     Oc = [x_mean, y_mean, z_mean]
 
+                    # Pythagorean Theorem with x and z
                     obj_range = np.sqrt(Oc[0] * Oc[0] + Oc[2] * Oc[2])
+
                     bearing = np.arctan2(-Oc[0], Oc[2])
 
                     if (np.isfinite(obj_range) and np.isfinite(bearing)):
